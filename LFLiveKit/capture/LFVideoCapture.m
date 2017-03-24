@@ -72,11 +72,20 @@
 
 
 - (void) turnFlashLightOn{
-    [_videoCamera.inputCamera setTorchModeOnWithLevel:1.0   error:nil];
+      if(_videoCamera.inputCamera.hasTorch){
+          [_videoCamera.inputCamera lockForConfiguration:nil];
+             _videoCamera.inputCamera.torchMode = AVCaptureTorchModeOn;
+          [_videoCamera.inputCamera setTorchModeOnWithLevel:1.0   error:nil];
+          [_videoCamera.inputCamera unlockForConfiguration];
+      }
 }
 
 - (void) turnFlashLightOff{
-    [_videoCamera.inputCamera setTorchModeOnWithLevel:0   error:nil];
+    if(_videoCamera.inputCamera.hasTorch){
+        [_videoCamera.inputCamera lockForConfiguration:nil];
+        _videoCamera.inputCamera.torchMode = AVCaptureTorchModeOff;
+        [_videoCamera.inputCamera unlockForConfiguration];
+    }
 }
 #pragma mark -- Setter Getter
 
