@@ -72,6 +72,7 @@
 
 
 - (void) turnFlashLightOn{
+
       if(_videoCamera.inputCamera.hasTorch){
           [_videoCamera.inputCamera lockForConfiguration:nil];
              _videoCamera.inputCamera.torchMode = AVCaptureTorchModeOn;
@@ -98,6 +99,13 @@
         _videoCamera.frameRate = (int32_t)_configuration.videoFrameRate;
     }
     return _videoCamera;
+}
+
+-(void)captureCamera{
+    [_filter useNextFrameForImageCapture];
+    UIImage *image = [_filter imageFromCurrentFramebuffer];
+    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+    
 }
 
 - (void)setRunning:(BOOL)running {

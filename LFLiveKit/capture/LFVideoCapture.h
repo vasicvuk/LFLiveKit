@@ -83,4 +83,5 @@
 -(void)loadCustomFilter:(int)input;
 - (void) turnFlashLightOff;
 - (void) turnFlashLightOn;
+-(void)captureCamera;
 @end

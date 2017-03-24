@@ -436,5 +436,7 @@
 - (void) turnFlashLightOn{
     [_videoCaptureSource turnFlashLightOn];
 }
-
+-(void)captureCamera{
+    [_videoCaptureSource captureCamera];
+}
 @end

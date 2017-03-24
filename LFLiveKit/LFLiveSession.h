@@ -159,6 +159,6 @@ typedef NS_ENUM(NSInteger,LFLiveCaptureTypeMask) {
 -(void)loadCustomFilter:(int)input;
 - (void) turnFlashLightOff;
 - (void) turnFlashLightOn;
-
+-(void)captureCamera;
 @end
 
