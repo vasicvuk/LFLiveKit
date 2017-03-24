@@ -17,7 +17,6 @@
 #import "LFLiveDebug.h"
 
 
-
 typedef NS_ENUM(NSInteger,LFLiveCaptureType) {
     LFLiveCaptureAudio,         //< capture only audio
     LFLiveCaptureVideo,         //< capture onlt video
@@ -157,6 +156,7 @@ typedef NS_ENUM(NSInteger,LFLiveCaptureTypeMask) {
 
 /** support outer input pcm audio(set LFLiveCaptureTypeMask) .*/
 - (void)pushAudio:(nullable NSData*)audioData;
+-(void)loadCustomFilter:(int)input;
 
 @end
 

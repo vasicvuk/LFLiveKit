@@ -51,7 +51,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willEnterForeground:) name:UIApplicationDidBecomeActiveNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarChanged:) name:UIApplicationWillChangeStatusBarOrientationNotification object:nil];
         
-        self.beautyFace = YES;
+        self.beautyFace = NO;
         self.beautyLevel = 0.5;
         self.brightLevel = 0.5;
         self.zoomScale = 1.0;
@@ -279,6 +279,56 @@
     }
 }
 
+
+-(GPUImage3x3ConvolutionFilter*) loadConvulationEffect{
+    GPUImage3x3ConvolutionFilter *filter = [[GPUImage3x3ConvolutionFilter alloc] init];
+    [filter setConvolutionKernel:(GPUMatrix3x3){
+        { -1.0f, 0.0f, 1.0f},
+        {-2.0f, 0.0f, 2.0f},
+        {-1.0f, 0.0f, 1.0f}
+    }];
+    return filter;
+}
+
+-(void)loadCustomFilter:(int)input {
+    switch(input){
+        case 0:
+            self.filter = [[LFGPUImageEmptyFilter alloc] init];
+            break;
+        case 1:
+            self.filter = [[GPUImageSobelEdgeDetectionFilter alloc] init];
+            break;
+        case 2:
+            self.filter = [[GPUImageColorInvertFilter alloc] init];
+            break;
+        case 3:
+            self.filter = [[GPUImageSepiaFilter alloc] init];
+            break;
+        case 4:
+            self.filter = [[GPUImagePixellateFilter alloc] init];
+            break;
+        case 5:
+            self.filter = [self loadConvulationEffect];
+            break;
+        case 6:
+            self.filter = [[GPUImageCGAColorspaceFilter alloc] init];
+            break;
+        case 7:
+            self.filter = [[GPUImageCrosshatchFilter alloc] init];
+            break;
+        case 8:
+            self.filter = [[GPUImageGrayscaleFilter alloc] init];
+            break;
+        case 9:
+            self.filter = [[LFGPUImageBeautyFilter alloc] init];
+            break;
+        default:
+            self.filter = [[LFGPUImageEmptyFilter alloc] init];
+            break;
+    }
+    [self reloadEffects];
+}
+
 - (void)reloadFilter{
     [self.filter removeAllTargets];
     [self.blendFilter removeAllTargets];
@@ -289,14 +339,29 @@
     
     if (self.beautyFace) {
         self.output = [[LFGPUImageEmptyFilter alloc] init];
-        self.filter = [[LFGPUImageBeautyFilter alloc] init];
         self.beautyFilter = (LFGPUImageBeautyFilter*)self.filter;
     } else {
         self.output = [[LFGPUImageEmptyFilter alloc] init];
         self.filter = [[LFGPUImageEmptyFilter alloc] init];
         self.beautyFilter = nil;
+  
     }
     
+    [self reloadSecondPart];
+    
+}
+
+- (void) reloadEffects{
+    [self.filter removeAllTargets];
+    [self.blendFilter removeAllTargets];
+    [self.uiElementInput removeAllTargets];
+    [self.videoCamera removeAllTargets];
+    [self.output removeAllTargets];
+    [self.cropfilter removeAllTargets];
+    [self reloadSecondPart];
+}
+
+- (void) reloadSecondPart{
     ///< 调节镜像
     [self reloadMirror];
     
@@ -335,7 +400,6 @@
     [self.output setFrameProcessingCompletionBlock:^(GPUImageOutput *output, CMTime time) {
         [_self processVideo:output];
     }];
-    
 }
 
 - (void)reloadMirror{

@@ -384,6 +384,10 @@
     return _videoEncoder;
 }
 
+-(void)loadCustomFilter:(int)input {
+    
+    [_videoCaptureSource loadCustomFilter: input];
+}
 - (id<LFStreamSocket>)socket {
     if (!_socket) {
         _socket = [[LFStreamRTMPSocket alloc] initWithStream:self.streamInfo reconnectInterval:self.reconnectInterval reconnectCount:self.reconnectCount];
