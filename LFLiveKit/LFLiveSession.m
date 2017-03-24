@@ -428,5 +428,13 @@
         return YES;
     }
 }
+- (void) turnFlashLightOff{
+    [_videoCaptureSource turnFlashLightOff];
+
+}
+
+- (void) turnFlashLightOn{
+    [_videoCaptureSource turnFlashLightOn];
+}
 
 @end

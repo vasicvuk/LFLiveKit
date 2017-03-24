@@ -70,6 +70,14 @@
     }
 }
 
+
+- (void) turnFlashLightOn{
+    [_videoCamera.inputCamera setTorchModeOnWithLevel:1.0   error:nil];
+}
+
+- (void) turnFlashLightOff{
+    [_videoCamera.inputCamera setTorchModeOnWithLevel:0   error:nil];
+}
 #pragma mark -- Setter Getter
 
 - (GPUImageVideoCamera *)videoCamera{

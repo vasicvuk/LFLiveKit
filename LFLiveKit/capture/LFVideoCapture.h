@@ -81,4 +81,6 @@
  */
 - (nullable instancetype)initWithVideoConfiguration:(nullable LFLiveVideoConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 -(void)loadCustomFilter:(int)input;
+- (void) turnFlashLightOff;
+- (void) turnFlashLightOn;
 @end
